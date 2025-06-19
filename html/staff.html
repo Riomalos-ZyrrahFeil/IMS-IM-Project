@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amacio's Coffee Shop - Inventory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/staff.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="profile">
+                <div class="avatar"></div>
+                <p class="staff-label">Staff</p>
+            </div>
+            <nav class="nav">
+                <button class="nav-item active" data-section="dashboard" onclick="switchSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-section="sales" onclick="switchSection('sales')">
+                    <i class="fas fa-cash-register"></i>
+                    Sales
+                </button>
+                <button class="nav-item" data-section="products" onclick="switchSection('products')">
+                    <i class="fas fa-box"></i>
+                    Products
+                </button>
+                <div class="nav-item dropdown">
+                    <button class="dropdown-toggle" id="supplyDropdown" onclick="toggleDropdown()">
+                        <i class="fas fa-truck"></i>
+                        Supply
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </button>
+                    <div class="dropdown-menu" id="supplyDropdownMenu">
+                        <button class="dropdown-item" data-section="supply-list" onclick="switchSection('supply-list')">Supply List</button>
+                        <button class="dropdown-item" data-section="added-supply" onclick="switchSection('added-supply')">Added Supply</button>
+                    </div>
+                </div>
+                <button class="nav-item" data-section="suppliers" onclick="switchSection('suppliers')">
+                    <i class="fas fa-user-group"></i>
+                    Suppliers
+                </button>
+            </nav>
+            <a href="#" class="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Log out
+            </a>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <header class="page-header">
+                    <h1>Amacio's Coffee Shop - Inventory</h1>
+                </header>
+                <div class="dashboard">
+                    <div class="card medium-card">
+                        <h2>Low Stocks Alert</h2>
+                        <div class="card-content">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Current Stock</th>
+                                        <th>Min Level</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lowStockTableBody">
+                                    <tr>
+                                        <td>Coffee Beans</td>
+                                        <td>5 kg</td>
+                                        <td>10 kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sugar</td>
+                                        <td>2 kg</td>
+                                        <td>5 kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coffee Beans</td>
+                                        <td>5 kg</td>
+                                        <td>10 kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coffee Beans</td>
+                                        <td>5 kg</td>
+                                        <td>10 kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coffee Beans</td>
+                                        <td>5 kg</td>
+                                        <td>10 kg</td>
+                                    </tr>
+                                    <!-- More rows will be added dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card medium-card">
+                        <h2>Inventory Overview</h2>
+                        <div class="card-content">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Total Items</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryOverviewBody">
+                                    <tr>
+                                        <td>Coffee Products</td>
+                                        <td>25</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Beverages</td>
+                                        <td>15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pastries</td>
+                                        <td>12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Supplies</td>
+                                        <td>8</td>
+                                    </tr>
+                                    <!-- More rows will be added dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card small-card">
+                        <h2>Monthly Usage Summary</h2>
+                        <div class="card-content">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Usage Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usageSummaryBody">
+                                    <tr>
+                                        <td>Current</td>
+                                        <td>85%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Previous</td>
+                                        <td>78%</td>
+                                    </tr>
+                                    <!-- More rows will be added dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card full-width stats-overview">
+                    <h2>Quick Stats</h2>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalProducts">0</div>
+                            <div class="stat-label">Total Products</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalSuppliers">0</div>
+                            <div class="stat-label">Total Suppliers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalSales">0</div>
+                            <div class="stat-label">Total Sales</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="lowStockItems">2</div>
+                            <div class="stat-label">Low Stock Items</div>
+                        </div>
+                    </div>
+                </div>
+         </section>
+
+            <!-- Sales Section -->
+            <section id="sales" class="content-section">
+                <header class="page-header">
+                    <h1><i class="fas fa-cash-register"></i> Sales Management</h1>
+                    <button class="btn btn-primary" id="addSaleBtn" onclick="openModal('saleModal')">
+                        <i class="fas fa-plus"></i> Add Sale
+                    </button>
+                </header>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salesTableBody">
+                            <!-- Sales data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="content-section">
+                <div id="categoryView">
+                    <header class="page-header">
+                        <h1><i class="fas fa-box"></i> Product Categories</h1>
+                    </header>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Category Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTableBody">
+                                <!-- Categories will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="productView" style="display: none;">
+                    <header class="page-header">
+                        <h1>
+                            <button class="btn btn-secondary" id="backToCategoriesBtn" onclick="showCategoryView()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <i class="fas fa-coffee"></i> PRODUCT [name] / All Products
+                        </h1>
+                    </header>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product Name</th>
+                                    <th>Product Size</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody">
+                                <!-- Products will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Supply List Section -->
+            <section id="supply-list" class="content-section">
+                <header class="page-header">
+                    <h1><i class="fas fa-list"></i> Supply List</h1>
+                    <button class="btn btn-primary" id="addSupplyBtn" onclick="openModal('supplyModal')">
+                        <i class="fas fa-plus"></i> Add Supply
+                    </button>
+                </header>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Supply Name</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplyTableBody">
+                            <!-- Supply data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Added Supply Section -->
+            <section id="added-supply" class="content-section">
+                <header class="page-header">
+                    <h1><i class="fas fa-plus-circle"></i> Added Supply</h1>
+                </header>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Supply Name</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="addedSupplyTableBody">
+                            <!-- Added supply data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Suppliers Section -->
+            <section id="suppliers" class="content-section">
+                <header class="page-header">
+                    <h1><i class="fas fa-user-group"></i> Suppliers</h1>
+                </header>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Supplier Name</th>
+                                <th>Contact Number</th>
+                                <th>Contact Person</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierTableBody">
+                            <!-- Supplier data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+    <!-- Modal Templates -->
+    <div class="modal" id="saleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="saleModalTitle">Add Sale</h2>
+                <button class="close-btn" onclick="closeModal('saleModal')">&times;</button>
+            </div>
+            <form id="saleForm" onsubmit="saveSale(event)">
+                <div class="form-group">
+                    <label for="saleProductName">Product Name</label>
+                    <input type="text" id="saleProductName" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <div class="quantity-control">
+                        <button type="button" onclick="changeQuantity('saleQuantity', -1)">-</button>
+                        <span id="saleQuantity">1</span>
+                        <button type="button" onclick="changeQuantity('saleQuantity', 1)">+</button>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('saleModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supply Modal -->
+    <div class="modal" id="supplyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="supplyModalTitle">Add Supply</h2>
+                <button class="close-btn" onclick="closeModal('supplyModal')">&times;</button>
+            </div>
+            <form id="supplyForm" onsubmit="saveSupply(event)">
+                <div class="form-group">
+                    <label for="supplyName">Supply Name</label>
+                    <input type="text" id="supplyName" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplyQuantity">Quantity</label>
+                    <input type="number" id="supplyQuantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplyUnit">Unit</label>
+                    <input type="text" id="supplyUnit" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('supplyModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/staff.js"></script>
+</body>
+</html>
