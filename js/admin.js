@@ -220,23 +220,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Setup dropdown menu items
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
     dropdownItems.forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             const section = this.getAttribute('data-section');
             if (section) {
                 switchSection(section);
-                // Close dropdown after selection
-                const dropdown = document.querySelector('.dropdown');
-                const dropdownMenu = document.getElementById("supplyDropdownMenu");
-                if (dropdown && dropdownMenu) {
-                    dropdown.classList.remove('open');
-                    dropdownMenu.classList.remove('show');
-                }
             }
         });
     });
+    
     
     // Initialize all other modules
     initializeNavigation();
@@ -453,8 +446,12 @@ function initializeProducts() {
     }
     
     if (addProductBtn) {
-        addProductBtn.addEventListener('click', () => openModal('productModal'));
-    }
+        addProductBtn.addEventListener('click', () => {
+            const hiddenInput = document.getElementById('hiddenCategoryId');
+            if (hiddenInput) hiddenInput.value = currentCategoryName;
+            openModal('productModal');
+        });
+    }    
     
     if (categoryForm) {
         categoryForm.addEventListener('submit', saveCategory);
@@ -601,8 +598,9 @@ function saveProduct(e) {
     
     const productName = document.getElementById('productName')?.value;
     const productSize = document.getElementById('productSize')?.value;
-    const category = document.getElementById('productCategory')?.value;
-    
+    const category = document.getElementById('hiddenCategoryId')?.value;
+    const categoryId = document.getElementById('hiddenCategoryId')?.value;
+
     if (!productName || !productSize || !category) {
         alert('Please fill in all required fields');
         return;
@@ -612,10 +610,18 @@ function saveProduct(e) {
         id: currentEditingId || generateId(),
         name: productName,
         size: productSize,
-        category: category,
-        stock: 0, // Default stock
-        ingredients: [] // Initialize empty ingredients array
+        category: categoryId,
+        stock: 0,
+        ingredients: []
     };
+
+    const newProduct = {
+        name: productName,
+        size: productSize,
+        categoryId: categoryId // pulled from hidden input
+    };
+    
+    addProductToTable(newProduct);    
     
     if (currentEditingId) {
         const index = data.products.findIndex(product => product.id === currentEditingId);
@@ -633,6 +639,8 @@ function saveProduct(e) {
     
     // Clear form
     document.getElementById('productForm').reset();
+    console.log("Adding Product:", productData);
+
 }
 
 
@@ -661,6 +669,7 @@ function deleteProduct(id) {
 function showProducts(category) {
     showProductView();
     renderProducts(category);
+    currentCategoryName = category;
 }
 
 function showCategoryView() {
@@ -1104,6 +1113,23 @@ function setupModalClosing() {
             }
         });
     });
+}
+
+function addProductToTable(product) {
+    const tableBody = document.getElementById('productTableBody');
+
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${tableBody.children.length + 1}</td>
+        <td>${product.name}</td>
+        <td>${product.size}</td>
+        <td>
+            <button class="btn btn-secondary btn-sm">Edit</button>
+            <button class="btn btn-danger btn-sm">Delete</button>
+        </td>
+    `;
+    
+    tableBody.appendChild(newRow);
 }
 
 // Initialize everything when DOM is loaded
