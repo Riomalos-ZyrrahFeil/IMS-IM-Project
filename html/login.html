@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amacio's Coffee Shop Inventory System - Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Branding Section -->
+        <div class="left-section">
+            <div class="branding-logo">
+                <!-- Large circular logo container -->
+                <img src="../assets/logo_cafe.png" alt="Amacio's Coffee Shop Logo" class="logo-image">
+            </div>
+            <div class="system-title">Amacio's Coffee Shop Inventory System</div>
+        </div>
+        
+        <!-- Right Login Form Section -->
+        <div class="right-section">
+            <form class="login-card" id="loginForm" novalidate>
+                <h2>LOG IN</h2>
+                
+                <div class="form-group">
+                    <label for="emailInput">Email</label>
+                    <input
+                        type="email"
+                        id="emailInput"
+                        name="email"
+                        required
+                        autocomplete="username"
+                        placeholder="example@gmail.com"
+                        aria-describedby="emailError"
+                        aria-invalid="false"
+                    />
+                    <div id="emailError" class="error-message" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordInput">Password</label>
+                    <input
+                        type="password"
+                        id="passwordInput"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        aria-describedby="passwordError"
+                        aria-invalid="false"
+                    />
+                    <div id="passwordError" class="error-message" aria-live="polite"></div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="sign-in-btn"
+                    id="signInBtn"
+                    disabled
+                    aria-disabled="true"
+                >
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/login.js"></script>
+</body>
+</html>
