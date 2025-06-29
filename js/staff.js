@@ -213,24 +213,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Setup dropdown menu items
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
     dropdownItems.forEach(item => {
         item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const section = this.getAttribute('data-section');
-            if (section) {
-                switchSection(section);
-                // Close dropdown after selection
-                const dropdown = document.querySelector('.dropdown');
-                const dropdownMenu = document.getElementById("supplyDropdownMenu");
-                if (dropdown && dropdownMenu) {
-                    dropdown.classList.remove('open');
-                    dropdownMenu.classList.remove('show');
-                }
-            }
+        e.preventDefault();
+        const section = this.getAttribute('data-section');
+        if (section) {
+            switchSection(section);
+        }
         });
     });
-    
+
     // Initialize all other modules
     initializeNavigation();
     initializeSales();
@@ -700,21 +692,18 @@ function initializeSupplies() {
 
 // Render Supply List (READ-ONLY - No edit/delete actions)
 function renderSupplies() {
-    const tbody = document.getElementById('supplyTableBody');
-    if (!tbody) return;
-    
-    tbody.innerHTML = '';
-    
-    data.supplies.forEach((supply, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${supply.name}</td>
-            <td>${supply.quantity}</td>
-            <td>${supply.unit}</td>
-        `;
-        tbody.appendChild(row);
-    });
+  const tbody = document.querySelector('#supply-list #supplyTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  data.supplies.forEach((supply, i) => {
+    tbody.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td>${i+1}</td>
+        <td>${supply.name}</td>
+        <td>${supply.quantity}</td>
+        <td>${supply.unit}</td>
+      </tr>`);
+  });
 }
 
 function saveSupply(e) {
@@ -761,28 +750,25 @@ function saveSupply(e) {
 }
 
 function renderAddedSupplies() {
-    const tbody = document.getElementById('addedSupplyTableBody');
+    const tbody = document.querySelector('#added-supply #addedSupplyTableBody');
     if (!tbody) return;
-   
     tbody.innerHTML = '';
-   
-    data.addedSupplies.forEach((supply, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${supply.name}</td>
-            <td>${supply.quantity}</td>
-            <td>${supply.unit}</td>
-            <td>${supply.dateAdded}</td>
-            <td class="action-btns">
-                <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(row);
+    data.addedSupplies.forEach((supply, i) => {
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td>${i+1}</td>
+          <td>${supply.name}</td>
+          <td>${supply.quantity}</td>
+          <td>${supply.unit}</td>
+          <td>${supply.dateAdded}</td>
+          <td>
+            <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
+              <i class="fas fa-edit"></i>
+            </button>
+          </td>
+        </tr>`);
     });
-}
+  }
 
 function editAddedSupply(id) {
     const supply = data.addedSupplies.find(s => s.id === id);

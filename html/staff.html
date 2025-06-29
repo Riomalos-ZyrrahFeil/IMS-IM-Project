@@ -34,10 +34,11 @@
                         Supply
                         <i class="fas fa-chevron-down dropdown-icon"></i>
                     </button>
-                    <div class="dropdown-menu" id="supplyDropdownMenu">
-                        <button class="dropdown-item" data-section="supply-list" onclick="switchSection('supply-list')">Supply List</button>
-                        <button class="dropdown-item" data-section="added-supply" onclick="switchSection('added-supply')">Added Supply</button>
-                    </div>
+                </div>
+                <!-- Sidebar Supply Dropdown -->
+                <div class="dropdown-menu" id="supplyDropdownMenu">
+                    <button class="dropdown-item" data-section="supply-list" onclick="switchSection('supply-list')">Supply List</button>
+                    <button class="dropdown-item" data-section="added-supply" onclick="switchSection('added-supply')">Added Supply</button>
                 </div>
                 <button class="nav-item" data-section="suppliers" onclick="switchSection('suppliers')">
                     <i class="fas fa-user-group"></i>
@@ -101,7 +102,7 @@
                         </div>
                     </div>
                     
-                    <div class="card medium-card">
+                    <div class="card large-card">
                         <h2>Inventory Overview</h2>
                         <div class="card-content">
                             <table class="dashboard-table">
@@ -261,49 +262,49 @@
             <!-- Supply List Section -->
             <section id="supply-list" class="content-section">
                 <header class="page-header">
-                    <h1><i class="fas fa-list"></i> Supply List</h1>
-                    <button class="btn btn-primary" id="addSupplyBtn" onclick="openModal('supplyModal')">
-                        <i class="fas fa-plus"></i> Add Supply
-                    </button>
+                <h1><i class="fas fa-list"></i> Supply List</h1>
+                <button class="btn btn-primary" onclick="openModal('supplyModal')">
+                    <i class="fas fa-plus"></i> Add Supply
+                </button>
                 </header>
                 <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Supply Name</th>
-                                <th>Quantity</th>
-                                <th>Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody id="supplyTableBody">
-                            <!-- Supply data will be populated here -->
-                        </tbody>
-                    </table>
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Supply Name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                    </tr>
+                    </thead>
+                    <tbody id="supplyTableBody">
+                    <!-- Supplies will be rendered here -->
+                    </tbody>
+                </table>
                 </div>
             </section>
-
+            
             <!-- Added Supply Section -->
             <section id="added-supply" class="content-section">
                 <header class="page-header">
-                    <h1><i class="fas fa-plus-circle"></i> Added Supply</h1>
+                <h1><i class="fas fa-plus-circle"></i> Added Supply</h1>
                 </header>
                 <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Supply Name</th>
-                                <th>Quantity</th>
-                                <th>Unit</th>
-                                <th>Date Added</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="addedSupplyTableBody">
-                            <!-- Added supply data will be populated here -->
-                        </tbody>
-                    </table>
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Supply Name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Date Added</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="addedSupplyTableBody">
+                    <!-- Added supplies will be rendered here -->
+                    </tbody>
+                </table>
                 </div>
             </section>
 
@@ -342,12 +343,13 @@
                     <input type="text" id="saleProductName" required>
                 </div>
                 <div class="form-group">
-                    <label>Quantity</label>
-                    <div class="quantity-control">
-                        <button type="button" onclick="changeQuantity('saleQuantity', -1)">-</button>
-                        <span id="saleQuantity">1</span>
-                        <button type="button" onclick="changeQuantity('saleQuantity', 1)">+</button>
-                    </div>
+                    <label for="saleProductSize">Product Size</label>
+                    <select id="saleProductSize" required>
+                        <option value="">Select Size</option>
+                        <option value="SHOT">SHOT</option>
+                        <option value="12oz">12oz</option>
+                        <option value="13oz">13oz</option>
+                    </select>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save</button>
