@@ -1257,3 +1257,10 @@ scrollbar-color: #774927 #f1f1f1;
   margin: 0;
 }
 
+#added-supply .data-table th:nth-child(1) { width:5%; }
+#added-supply .data-table th:nth-child(2) { width:25%; }
+#added-supply .data-table th:nth-child(3) { width:10%; }
+#added-supply .data-table th:nth-child(4) { width:10%; }
+#added-supply .data-table th:nth-child(5) { width:20%; }
+#added-supply .data-table th:nth-child(6) { width:20%; }
+#added-supply .data-table th:nth-child(7) { width:10%; }

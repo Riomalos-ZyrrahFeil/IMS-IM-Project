@@ -747,7 +747,14 @@ function renderAddedSupplies() {
         <td>${supply.unit}</td>
         <td>${supply.receivedBy}</td>   <!-- ← new -->
         <td>${supply.dateAdded}</td>
-        <td class="action-btns">…</td>
+            <td class="action-btns">
+                <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger" onclick="deleteAddedSupply(${supply.id})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
       `;
       tbody.appendChild(row);
     });
@@ -795,33 +802,6 @@ function saveSupply(e) {
     document.getElementById('supplyForm').reset();
     currentEditingId = null;
     document.getElementById('supplyModalTitle').textContent = 'Add Supply';
-}
-
-function renderAddedSupplies() {
-    const tbody = document.getElementById('addedSupplyTableBody');
-    if (!tbody) return;
-   
-    tbody.innerHTML = '';
-   
-    data.addedSupplies.forEach((supply, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${supply.name}</td>
-            <td>${supply.quantity}</td>
-            <td>${supply.unit}</td>
-            <td>${supply.dateAdded}</td>
-            <td class="action-btns">
-                <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger" onclick="deleteAddedSupply(${supply.id})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
 }
 
 function editAddedSupply(id) {
@@ -878,51 +858,6 @@ function addSupply() {
     saveToLocalStorage('suppliesData', data.supplies);
     renderSupplies();
     hideAddModal();
-}
-
-// Added Supply Functions
-function renderAddedSupplies() {
-    const tbody = document.getElementById('addedSupplyTableBody');
-    if (!tbody) return;
-    
-    tbody.innerHTML = '';
-    
-    data.addedSupplies.forEach((supply, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${supply.name}</td>
-            <td>${supply.quantity}</td>
-            <td>${supply.unit}</td>
-            <td>${supply.dateAdded}</td>
-            <td class="action-btns">
-                <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger" onclick="deleteAddedSupply(${supply.id})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
-}
-
-function editAddedSupply(id) {
-    // Implementation for editing added supplies
-    const supply = data.addedSupplies.find(s => s.id === id);
-    if (supply) {
-        // You can implement this similar to other edit functions
-        console.log('Edit added supply:', supply);
-    }
-}
-
-function deleteAddedSupply(id) {
-    if (confirm('Are you sure you want to delete this added supply?')) {
-        data.addedSupplies = data.addedSupplies.filter(supply => supply.id !== id);
-        saveToLocalStorage('addedSuppliesData', data.addedSupplies);
-        renderAddedSupplies();
-    }
 }
 
 // Supplier Functions
