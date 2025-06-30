@@ -210,6 +210,7 @@
                                 <th>#</th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
+                                <th>Entered by</th>
                                 <th>Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -346,6 +347,7 @@
                                 <th>Supply Name</th>
                                 <th>Quantity</th>
                                 <th>Unit</th>
+                                <th>Recieved by</th>
                                 <th>Date Added</th>
                                 <th>Actions</th>
                             </tr>
@@ -413,8 +415,6 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Status</th>
-                                <th>Last Login</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -450,12 +450,25 @@
                     </select>
                 </div>
                 
+                <!-- new: Entered By -->
                 <div class="form-group">
-                    <label>Quantity</label>
+                    <label for="saleEnteredBy">Entered By</label>
+                    <input type="text" id="saleEnteredBy" required>
+                </div>
+                
+                <!-- new: Quantity as a number‐input -->
+                <div class="form-group">
+                    <label for="saleQuantityInput">Quantity</label>
                     <div class="quantity-control">
-                        <button type="button" onclick="changeQuantity('saleQuantity', -1)">-</button>
-                        <span id="saleQuantity">1</span>
-                        <button type="button" onclick="changeQuantity('saleQuantity', 1)">+</button>
+                    <button type="button" class="qty-btn" onclick="changeQuantity('saleQuantityInput', -1)">-</button>
+                    <input
+                        type="number"
+                        id="saleQuantityInput"
+                        min="1"
+                        value="1"
+                        required
+                    >
+                    <button type="button" class="qty-btn" onclick="changeQuantity('saleQuantityInput', 1)">+</button>
                     </div>
                 </div>
                 <div class="form-actions">
@@ -534,6 +547,10 @@
                 <div class="form-group">
                     <label for="supplyQuantity">Quantity</label>
                     <input type="number" id="supplyQuantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplyReceivedBy">Received By</label>
+                    <input type="text" id="supplyReceivedBy" required>
                 </div>
                 <div class="form-group">
                     <label for="supplyUnit">Unit</label>
