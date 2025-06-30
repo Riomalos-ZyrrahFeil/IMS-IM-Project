@@ -205,6 +205,7 @@
                                 <th>#</th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
+                                <th>Entered by</th>
                                 <th>Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -258,9 +259,6 @@
                             <i class="fas fa-search search-icon"></i>
                           </div>
                         </div>
-                        <button class="btn btn-primary" id="addProductBtn" onclick="openModal('productModal')">
-                          ADD PRODUCT
-                        </button>
                       </header>
                     <div class="table-container">
                         <table class="data-table">
@@ -289,9 +287,6 @@
                         <input type="text" id="supplySearch" onkeyup="filterSupplies()" placeholder="Search supply..." class="search-input">
                         <i class="fas fa-search search-icon"></i>
                       </div>
-                      <button class="btn btn-primary" onclick="openModal('supplyModal')">
-                        <i class="fas fa-plus"></i> Add Supply
-                      </button>
                     </div>
                   </header>
                 <div class="table-container">
@@ -320,6 +315,9 @@
                             <input type="text" id="addedSupplySearch" onkeyup="filterAddedSupplies()" placeholder="Search added supply..." class="search-input">
                             <i class="fas fa-search search-icon"></i>
                           </div>
+                          <button class="btn btn-primary" onclick="openModal('supplyModal')">
+                            <i class="fas fa-plus"></i> Add Supply
+                          </button>
                         </div>
                       </header>
                 <div class="table-container">
@@ -330,6 +328,7 @@
                         <th>Supply Name</th>
                         <th>Quantity</th>
                         <th>Unit</th>
+                        <th>Recieved by</th>
                         <th>Date Added</th>
                         <th>Actions</th>
                     </tr>
@@ -389,6 +388,27 @@
                         <option value="12oz">12oz</option>
                         <option value="13oz">13oz</option>
                     </select>
+                </div>
+                 <!-- new: Entered By -->
+                 <div class="form-group">
+                    <label for="saleEnteredBy">Entered By</label>
+                    <input type="text" id="saleEnteredBy" required>
+                </div>
+                
+                <!-- new: Quantity as a number‐input -->
+                <div class="form-group">
+                    <label for="saleQuantityInput">Quantity</label>
+                    <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQuantity('saleQuantityInput', -1)">-</button>
+                    <input
+                        type="number"
+                        id="saleQuantityInput"
+                        min="1"
+                        value="1"
+                        required
+                    >
+                    <button type="button" class="qty-btn" onclick="changeQuantity('saleQuantityInput', 1)">+</button>
+                    </div>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save</button>

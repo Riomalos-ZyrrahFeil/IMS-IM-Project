@@ -1214,3 +1214,53 @@ scrollbar-color: #774927 #f1f1f1;
   padding: 0 20px 20px;
   gap: 20px;
 }
+
+/* Sales table is .data-table in #sales */
+#sales .data-table th:nth-child(1){width:8%;}
+#sales .data-table th:nth-child(2){width:32%;}
+#sales .data-table th:nth-child(3){width:12%;}
+#sales .data-table th:nth-child(4){width:16%;} /* Entered By */
+#sales .data-table th:nth-child(5){width:16%;} /* Date */
+#sales .data-table th:nth-child(6){width:16%;} /* Actions */
+
+/* quantity-control neutral by default, brown on hover */
+.quantity-control .qty-btn {
+  background: none;
+  border: 1px solid #ccc;
+  color: #555;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: background-color .2s, color .2s;
+  cursor: pointer;
+}
+.quantity-control .qty-btn:hover {
+  background: #774927;
+  color: #fff;
+}
+
+/* tighten up the input field a bit */
+.quantity-control input[type="number"] {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 6px;
+}
+
+/* hide Chrome, Safari, Edge, Opera spinners */
+.quantity-control input[type="number"]::-webkit-outer-spin-button,
+.quantity-control input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#added-supply .data-table th:nth-child(1) { width:5%; }
+#added-supply .data-table th:nth-child(2) { width:25%; }
+#added-supply .data-table th:nth-child(3) { width:10%; }
+#added-supply .data-table th:nth-child(4) { width:10%; }
+#added-supply .data-table th:nth-child(5) { width:20%; }
+#added-supply .data-table th:nth-child(6) { width:20%; }
+#added-supply .data-table th:nth-child(7) { width:10%; }

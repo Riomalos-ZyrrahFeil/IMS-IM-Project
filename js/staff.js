@@ -126,13 +126,22 @@ function resetModalTitles() {
 
 // Quantity Control Functions
 function changeQuantity(elementId, delta) {
-    const element = document.getElementById(elementId);
-    if (element) {
-        let current = parseInt(element.textContent) || 1;
-        current = Math.max(1, current + delta);
-        element.textContent = current;
+    const el = document.getElementById(elementId);
+    if (!el) return;
+  
+    // If it's a number‐input, change its .value
+    if (el.tagName === 'INPUT' && el.type === 'number') {
+      let val = parseInt(el.value, 10) || 1;
+      val = Math.max(1, val + delta);
+      el.value = val;
     }
-}
+    // fallback for any spans you might still have
+    else {
+      let val = parseInt(el.textContent, 10) || 1;
+      val = Math.max(1, val + delta);
+      el.textContent = val;
+    }
+  }  
 
 function changeQty(type, delta) {
     const element = document.getElementById(type);
@@ -290,6 +299,7 @@ function renderSales() {
             <td>${index + 1}</td>
             <td>${sale.productName}</td>
             <td>${sale.quantity}</td>
+            <td>${sale.enteredBy}</td>
             <td>${sale.date}</td>
             <td class="action-btns">
                 <button class="btn btn-success" onclick="editSale(${sale.id})">
@@ -306,47 +316,50 @@ function renderSales() {
 
 function saveSale(e) {
     e.preventDefault();
-   
-    const productName = document.getElementById('saleProductName')?.value;
-    const quantity = parseInt(document.getElementById('saleQuantity')?.textContent) || 1;
-   
-    if (!productName) {
-        alert('Please fill in all required fields');
-        return;
+  
+    const productName  = document.getElementById('saleProductName').value.trim();
+    const quantity     = parseInt(document.getElementById('saleQuantityInput').value, 10);
+    const enteredBy    = document.getElementById('saleEnteredBy').value.trim();          // ← new
+    const date         = formatDate();
+  
+    if (!productName || !enteredBy || quantity < 1) {
+      alert('Please fill in all required fields');
+      return;
     }
-   
+  
     const saleData = {
-        id: currentEditingId || generateId(),
-        productName,
-        quantity,
-        date: formatDate()
+      id: currentEditingId || generateId(),
+      productName,
+      quantity,
+      enteredBy,     // ← new
+      date
     };
-   
+  
     if (currentEditingId) {
-        const index = data.sales.findIndex(sale => sale.id === currentEditingId);
-        if (index !== -1) {
-            data.sales[index] = saleData;
-        }
+      const idx = data.sales.findIndex(s => s.id === currentEditingId);
+      if (idx > -1) data.sales[idx] = saleData;
     } else {
-        data.sales.push(saleData);
+      data.sales.push(saleData);
     }
-   
+  
     saveToLocalStorage('salesData', data.sales);
     renderSales();
     closeModal('saleModal');
     updateDashboardStats();
-}
+  }
+  
 
-function editSale(id) {
+  function editSale(id) {
     const sale = data.sales.find(s => s.id === id);
-    if (sale) {
-        document.getElementById('saleProductName').value = sale.productName;
-        document.getElementById('saleQuantity').textContent = sale.quantity;
-        document.getElementById('saleModalTitle').textContent = 'Edit Sale';
-        currentEditingId = id;
-        openModal('saleModal');
-    }
-}
+    if (!sale) return;
+    document.getElementById('saleProductName').value   = sale.productName;
+    document.getElementById('saleEnteredBy').value     = sale.enteredBy;
+    document.getElementById('saleQuantityInput').value = sale.quantity;   // ← set .value
+    document.getElementById('saleModalTitle').textContent = 'Edit Sale';
+    currentEditingId = id;
+    openModal('saleModal');
+  }
+  
 
 function deleteSale(id) {
     if (confirm('Are you sure you want to delete this sale?')) {
@@ -383,7 +396,6 @@ function addSale() {
             <td>${date}</td>
             <td class="actions">
                 <button class="edit-btn" onclick="editSale(this)">✏️</button>
-                <button class="delete-btn" onclick="deleteSale(this)">🗑️</button>
             </td>
         `;
         table.appendChild(row);
@@ -753,26 +765,30 @@ function saveSupply(e) {
   }
   
 
-function renderAddedSupplies() {
-    const tbody = document.querySelector('#added-supply #addedSupplyTableBody');
-    if (!tbody) return;
+  function renderAddedSupplies() {
+    const tbody = document.getElementById('addedSupplyTableBody');
     tbody.innerHTML = '';
-    data.addedSupplies.forEach((supply, i) => {
-      tbody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td>${i+1}</td>
-          <td>${supply.name}</td>
-          <td>${supply.quantity}</td>
-          <td>${supply.unit}</td>
-          <td>${supply.dateAdded}</td>
-          <td>
-            <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
-              <i class="fas fa-edit"></i>
-            </button>
-          </td>
-        </tr>`);
+  
+    data.addedSupplies.forEach((s, i) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${i+1}</td>
+        <td>${s.name}</td>
+        <td>${s.quantity}</td>
+        <td>${s.unit}</td>
+        <td>${s.receivedBy}</td>
+        <td>${s.dateAdded}</td>
+        <td class="action-btns">
+          <button class="btn btn-success" onclick="editAddedSupply(${s.id})">
+            <i class="fas fa-edit"></i>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(row);
     });
   }
+  
+  
 
 function editAddedSupply(id) {
     const supply = data.addedSupplies.find(s => s.id === id);
@@ -815,73 +831,6 @@ function addSupply() {
     saveToLocalStorage('suppliesData', data.supplies);
     renderSupplies();
     hideAddModal();
-}
-
-// Added Supply Functions
-function renderAddedSupplies() {
-    const tbody = document.getElementById('addedSupplyTableBody');
-    if (!tbody) return;
-    
-    tbody.innerHTML = '';
-    
-    data.addedSupplies.forEach((supply, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${supply.name}</td>
-            <td>${supply.quantity}</td>
-            <td>${supply.unit}</td>
-            <td>${supply.dateAdded}</td>
-            <td class="action-btns">
-                <button class="btn btn-success" onclick="editAddedSupply(${supply.id})">
-                    <i class="fas fa-edit"></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(row);
-    });
-}
-
-function editAddedSupply(id) {
-    // Implementation for editing added supplies
-    const supply = data.addedSupplies.find(s => s.id === id);
-    if (supply) {
-        // You can implement this similar to other edit functions
-        console.log('Edit added supply:', supply);
-    }
-}
-
-function saveSupplier(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('supplierSupplyName')?.value;
-    const number = document.getElementById('supplierContact')?.value;
-    const contact = document.getElementById('supplierContactName')?.value;
-    
-    if (!name || !number || !contact) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    const supplierData = {
-        id: currentEditingId || generateId(),
-        name,
-        number,
-        contact
-    };
-    
-    if (currentEditingId) {
-        const index = data.suppliers.findIndex(supplier => supplier.id === currentEditingId);
-        if (index !== -1) {
-            data.suppliers[index] = supplierData;
-        }
-    } else {
-        data.suppliers.push(supplierData);
-    }
-    
-    saveToLocalStorage('suppliersData', data.suppliers);
-    closeModal('supplierModal');
-    updateDashboardStats();
 }
 
 
