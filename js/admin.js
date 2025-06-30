@@ -95,13 +95,14 @@ function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('show');
-        // Reset form if it's an add modal
-        if (modalId.includes('Modal') && !currentEditingId) {
-            const form = modal.querySelector('form');
-            if (form) form.reset();
+        
+        const form = modal.querySelector('form');
+        if (form && !currentEditingId) {
+            form.reset();
         }
     }
 }
+
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -601,11 +602,11 @@ function saveProduct(e) {
     const category = document.getElementById('hiddenCategoryId')?.value;
     const categoryId = document.getElementById('hiddenCategoryId')?.value;
 
-    if (!productName || !productSize || !category) {
-        alert('Please fill in all required fields');
-        return;
+    if (!productName || !productSize || !categoryId) {
+    alert('Please fill in all required fields');
+    return;
     }
-    
+
     const productData = {
         id: currentEditingId || generateId(),
         name: productName,
@@ -812,14 +813,19 @@ function renderAddedSupplies() {
 function editAddedSupply(id) {
     const supply = data.addedSupplies.find(s => s.id === id);
     if (supply) {
-        document.getElementById('supplyName').value = supply.name;
-        document.getElementById('supplyQuantity').value = supply.quantity;
-        document.getElementById('supplyUnit').value = supply.unit;
-        document.getElementById('supplyModalTitle').textContent = 'Edit Added Supply';
+        document.getElementById('supplyName').value = supply.name || '';
+        document.getElementById('supplyQuantity').value = supply.quantity || 0;
+        document.getElementById('supplyUnit').value = supply.unit || '';
+        
+        // Update modal title
+        const title = document.getElementById('supplyModalTitle');
+        if (title) title.textContent = 'Edit Added Supply';
+        
         currentEditingId = id;
         openModal('supplyModal');
     }
 }
+
 
 function deleteAddedSupply(id) {
     if (confirm('Are you sure you want to delete this added supply?')) {
@@ -930,27 +936,28 @@ function renderSuppliers() {
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${supplier.name}</td>
-            <td>${supplier.number}</td>
             <td>${supplier.contact}</td>
+            <td>${supplier.number}</td>
             <td class="action-btns">
                 <button class="btn btn-success" onclick="editSupplier(${supplier.id})">
-                    <i class="fas fa-edit"></i>
+                <i class="fas fa-edit"></i>
                 </button>
                 <button class="btn btn-danger" onclick="deleteSupplier(${supplier.id})">
-                    <i class="fas fa-trash"></i>
+                <i class="fas fa-trash"></i>
                 </button>
             </td>
-        `;
+            `;
+
         tbody.appendChild(row);
     });
 }
 
 function saveSupplier(e) {
     e.preventDefault();
-    
-    const name = document.getElementById('supplierSupplyName')?.value;
-    const number = document.getElementById('supplierContact')?.value;
-    const contact = document.getElementById('supplierContactName')?.value;
+
+    const name = document.getElementById('supplierName')?.value;
+    const number = document.getElementById('supplierNumber')?.value;
+    const contact = document.getElementById('supplierContact')?.value;
     
     if (!name || !number || !contact) {
         alert('Please fill in all fields');
@@ -982,9 +989,10 @@ function saveSupplier(e) {
 function editSupplier(id) {
     const supplier = data.suppliers.find(s => s.id === id);
     if (supplier) {
-        document.getElementById('supplierSupplyName').value = supplier.name;
-        document.getElementById('supplierContact').value = supplier.number;
-        document.getElementById('supplierContactName').value = supplier.contact;
+        document.getElementById('supplierSupplyName').value = supplier.name || '';  // Supply Name
+        document.getElementById('supplierName').value = supplier.contact || '';     // Supplier Name
+        document.getElementById('supplierNumber').value = supplier.number || '';    // Contact Number
+
         document.getElementById('supplierModalTitle').textContent = 'Edit Supplier';
         currentEditingId = id;
         openModal('supplierModal');
@@ -1024,19 +1032,21 @@ function renderUsers() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${user.name}</td>
+            <td>${user.username || ''}</td>
+            <td>${user.email || ''}</td>
             <td>${user.role}</td>
             <td><span class="status">${user.status}</span></td>
             <td>${user.login}</td>
             <td class="action-btns">
                 <button class="btn btn-success" onclick="editUser(${user.id})">
-                    <i class="fas fa-edit"></i>
+                <i class="fas fa-edit"></i>
                 </button>
                 <button class="btn btn-danger" onclick="deleteUser(${user.id})">
-                    <i class="fas fa-trash"></i>
+                <i class="fas fa-trash"></i>
                 </button>
             </td>
-        `;
+            `;
+
         tbody.appendChild(row);
     });
 }
@@ -1044,20 +1054,18 @@ function renderUsers() {
 function saveUser(e) {
     e.preventDefault();
     
-    const name = document.getElementById('userName')?.value;
     const username = document.getElementById('userUsername')?.value;
     const email = document.getElementById('userEmail')?.value;
     const password = document.getElementById('userPassword')?.value;
     const role = document.getElementById('userRole')?.value;
     
-    if (!name || !username || !email || !password || !role) {
+    if (!username || !email || !password || !role) {
         alert('Please fill in all fields');
         return;
     }
     
     const userData = {
         id: currentEditingId || generateId(),
-        name,
         username,
         email,
         password, // In a real app, this should be hashed
@@ -1077,18 +1085,18 @@ function saveUser(e) {
     
     saveToLocalStorage('usersData', data.users);
     renderUsers();
+    alert('User successfully saved!');
     closeModal('userModal');
 }
 
 function editUser(id) {
     const user = data.users.find(u => u.id === id);
     if (user) {
-        document.getElementById('userName').value = user.name;
         document.getElementById('userUsername').value = user.username || '';
         document.getElementById('userEmail').value = user.email || '';
-        document.getElementById('userPassword').value = ''; // Don't populate password for security
+        document.getElementById('userPassword').value = ''; // Don’t populate password
         document.getElementById('userRole').value = user.role;
-        document.getElementById('userModalTitle').textContent = 'Edit Staff';
+
         currentEditingId = id;
         openModal('userModal');
     }
@@ -1131,6 +1139,17 @@ function addProductToTable(product) {
     
     tableBody.appendChild(newRow);
 }
+
+function confirmLogout(event) {
+    event.preventDefault();
+    openModal('logoutConfirmModal');
+  }
+  
+  function performLogout() {
+    closeModal('logoutConfirmModal');
+    // You can redirect to your login page or clear localStorage here
+    window.location.href = "login.html"; // Adjust as needed
+  }
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {

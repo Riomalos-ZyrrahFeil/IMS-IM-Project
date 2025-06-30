@@ -50,7 +50,7 @@
                     User Management
                 </button>
             </nav>
-            <a href="#" class="logout">
+            <a href="#" class="logout" onclick="confirmLogout(event)">
                 <i class="fas fa-sign-out-alt"></i>
                 Log out
             </a>
@@ -191,12 +191,18 @@
 
             <!-- Sales Section -->
             <section id="sales" class="content-section">
-                <header class="page-header">
+                <header class="page-header sales-header">
                     <h1><i class="fas fa-cash-register"></i> Sales Management</h1>
-                    <button class="btn btn-primary" id="addSaleBtn" onclick="openModal('saleModal')">
+                    <div class="actions-group">
+                      <div class="search-wrapper">
+                        <input type="text" id="salesSearch" onkeyup="filterSales()" placeholder="Search sales..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                      </div>
+                      <button class="btn btn-primary" id="addSaleBtn" onclick="openModal('saleModal')">
                         <i class="fas fa-plus"></i> Add Sale
-                    </button>
-                </header>
+                      </button>
+                    </div>
+                  </header>
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -218,12 +224,19 @@
             <!-- Products Section -->
             <section id="products" class="content-section">
                 <div id="categoryView">
-                    <header class="page-header">
+                    <header class="page-header category-header">
                         <h1><i class="fas fa-box"></i> Product Categories</h1>
-                        <button class="btn btn-primary" id="addCategoryBtn" onclick="openModal('categoryModal')">
-                            <i class="fas fa-plus" ></i> Add Category
-                        </button>
-                    </header>
+                        <div class="actions-group">
+                          <div class="search-wrapper">
+                            <input type="text" id="categorySearch" placeholder="Search category..." onkeyup="filterCategories()" class="search-input">
+                            <i class="fas fa-search search-icon"></i>
+                          </div>
+                          <button class="btn btn-primary" id="addCategoryBtn" onclick="openModal('categoryModal')">
+                            <i class="fas fa-plus"></i> Add Category
+                          </button>
+                        </div>
+                      </header>
+                      
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
@@ -241,17 +254,24 @@
                 </div>
 
                 <div id="productView" style="display: none;">
-                    <header class="page-header">
-                        <h1>
+                    <header class="page-header product-header">
+                        <div class="page-title-group">
+                          <h1>
                             <button class="btn btn-secondary" id="backToCategoriesBtn" onclick="showCategoryView()">
-                                <i class="fas fa-arrow-left"></i> Back
+                              <i class="fas fa-arrow-left"></i> Back
                             </button>
                             <i class="fas fa-coffee"></i> PRODUCT [name] / All Products
-                        </h1>
+                          </h1>
+                          <div class="search-wrapper">
+                            <input type="text" id="productSearch" onkeyup="filterProducts()" placeholder="Search product..." class="search-input">
+                            <i class="fas fa-search search-icon"></i>
+                          </div>
+                        </div>
                         <button class="btn btn-primary" id="addProductBtn" onclick="openModal('productModal')">
-                            ADD PRODUCT
+                          ADD PRODUCT
                         </button>
-                    </header>
+                      </header>
+                      
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
@@ -273,12 +293,19 @@
 
             <!-- Supply List Section -->
             <section id="supply-list" class="content-section">
-                <header class="page-header">
+                <header class="page-header supply-header">
                     <h1><i class="fas fa-list"></i> Supply List</h1>
-                    <button class="btn btn-primary" onclick="openModal('supplyModal')">
+                    <div class="actions-group">
+                      <div class="search-wrapper">
+                        <input type="text" id="supplySearch" onkeyup="filterSupplies()" placeholder="Search supply..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                      </div>
+                      <button class="btn btn-primary" onclick="openModal('supplyModal')">
                         <i class="fas fa-plus"></i> Add Supply
-                    </button>
-                </header>
+                      </button>
+                    </div>
+                  </header>
+                  
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -298,9 +325,19 @@
 
             <!-- Added Supply Section -->
             <section id="added-supply" class="content-section">
-                <header class="page-header">
+                <header class="page-header added-supply-header">
                     <h1><i class="fas fa-plus-circle"></i> Added Supply</h1>
-                </header>
+                    <div class="actions-group">
+                      <div class="search-wrapper">
+                        <input type="text" id="addedSupplySearch" onkeyup="filterAddedSupplies()" placeholder="Search added supply..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                      </div>
+                      <button class="btn btn-primary" onclick="openModal('supplyModal')">
+                        <i class="fas fa-plus"></i> Add Supply
+                      </button>
+                    </div>
+                  </header>
+                  
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -323,20 +360,26 @@
 
             <!-- Suppliers Section -->
             <section id="suppliers" class="content-section">
-                <header class="page-header">
+                <header class="page-header supplier-header">
                     <h1><i class="fas fa-user-group"></i> Suppliers</h1>
-                    <button class="btn btn-primary" id="addSupplierBtn" onclick="openModal('supplierModal')">
+                    <div class="actions-group">
+                      <div class="search-wrapper">
+                        <input type="text" id="supplierSearch" onkeyup="filterSuppliers()" placeholder="Search supplier..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                      </div>
+                      <button class="btn btn-primary" id="addSupplierBtn" onclick="openModal('supplierModal')">
                         <i class="fas fa-plus"></i> Add Supplier
-                    </button>
-                </header>
+                      </button>
+                    </div>
+                  </header>
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Supply Name</th>
                                 <th>Supplier Name</th>
                                 <th>Contact Number</th>
-                                <th>Contact Person</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -349,18 +392,26 @@
 
             <!-- User Management Section -->
             <section id="user-management" class="content-section">
-                <header class="page-header">
+                <header class="page-header user-header">
                     <h1><i class="fas fa-users"></i> User Management</h1>
-                    <button class="btn btn-primary" id="addUserBtn" onclick="openModal('userModal')">
+                    <div class="actions-group">
+                      <div class="search-wrapper">
+                        <input type="text" id="userSearch" onkeyup="filterUsers()" placeholder="Search user..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                      </div>
+                      <button class="btn btn-primary" id="addUserBtn" onclick="openModal('userModal')">
                         <i class="fas fa-plus"></i> Add User
-                    </button>
-                </header>
+                      </button>
+                    </div>
+                  </header>
+                  
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Last Login</th>
@@ -509,13 +560,13 @@
                     <input type="text" id="supplierSupplyName" required>
                 </div>
                 <div class="form-group">
-                    <label for="supplierContact">Contact Number</label>
-                    <input type="text" id="supplierContact" required>
+                    <label for="supplierName">Supplier Name</label>
+                    <input type="text" id="supplierName" required>
                 </div>
                 <div class="form-group">
-                    <label for="supplierContactName">Contact Name</label>
-                    <input type="text" id="supplierContactName" required>
-                </div>
+                    <label for="supplierNumber">Contact Number</label>
+                    <input type="text" id="supplierNumber" required>
+                </div>               
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-secondary" onclick="closeModal('supplierModal')">Cancel</button>
@@ -532,10 +583,6 @@
                 <button class="close-btn" onclick="closeModal('userModal')">&times;</button>
             </div>
             <form id="userForm" onsubmit="saveUser(event)">
-                <div class="form-group">
-                    <label for="userName">Name</label>
-                    <input type="text" id="userName" required>
-                </div>
                 <div class="form-group">
                     <label for="userUsername">Username</label>
                     <input type="text" id="userUsername" required>
@@ -578,6 +625,22 @@
         </div>
     </div>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="modal" id="logoutConfirmModal">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Logout</h2>
+            <button class="close-btn" onclick="closeModal('logoutConfirmModal')">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 20px; font-size: 16px;">
+            Are you sure you want to log out?
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="performLogout()">Yes, Log Out</button>
+            <button class="btn btn-secondary" onclick="closeModal('logoutConfirmModal')">Cancel</button>
+        </div>
+        </div>
+    </div>
     <script src="../js/admin.js"></script>
 </body>
 </html>
