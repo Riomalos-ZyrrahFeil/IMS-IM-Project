@@ -1005,3 +1005,212 @@ scrollbar-color: #774927 #f1f1f1;
 .dropdown.open .dropdown-icon {
   transform: rotate(180deg);
 }
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  padding: 8px 36px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 500px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #774927;
+  box-shadow: 0 0 0 2px rgba(119, 73, 39, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.page-title-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  padding: 8px 36px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 500px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #774927;
+  box-shadow: 0 0 0 2px rgba(119, 73, 39, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.page-title-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  padding: 8px 36px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 500px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #774927;
+  box-shadow: 0 0 0 2px rgba(119, 73, 39, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+#supplierTableBody td:nth-child(2),
+#supplierTableBody th:nth-child(2) {
+  width: 30%;
+}
+
+#supplierTableBody td:nth-child(3),
+#supplierTableBody th:nth-child(3) {
+  width: 25%;
+}
+
+#supplierTableBody td:nth-child(4),
+#supplierTableBody th:nth-child(4) {
+  width: 25%;
+}
+
+#userTableBody td:nth-child(2),
+#userTableBody th:nth-child(2) {
+  width: 20%; /* Username */
+}
+
+#userTableBody td:nth-child(3),
+#userTableBody th:nth-child(3) {
+  width: 20%; /* Email */
+}
+
+#userTableBody td:nth-child(6),
+#userTableBody th:nth-child(6) {
+  width: 25%; /* Last Login */
+  white-space: nowrap;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: white;
+  background-color: #28a745;
+}
+
+.status.inactive {
+  background-color: #dc3545;
+}
+
+#supplierTableBody td:nth-child(2),
+#supplierTableBody th:nth-child(2) {
+  width: 30%;
+}
+#supplierTableBody td:nth-child(3),
+#supplierTableBody th:nth-child(3),
+#supplierTableBody td:nth-child(4),
+#supplierTableBody th:nth-child(4) {
+  width: 20%;
+}
+
+/* Enhanced Modal Animation */
+.modal.show .modal-content {
+  animation: popIn 0.3s ease-out forwards;
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Dimmer and centered modal */
+.modal {
+  background-color: rgba(0, 0, 0, 0.7); /* Stronger overlay */
+}
+
+#logoutConfirmModal .modal-content {
+  max-width: 400px;
+  border-radius: 12px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+#logoutConfirmModal .modal-body {
+  padding: 24px;
+  font-size: 16px;
+  color: #333;
+}
+
+#logoutConfirmModal .form-actions {
+  justify-content: center;
+  padding: 0 20px 20px;
+  gap: 20px;
+}

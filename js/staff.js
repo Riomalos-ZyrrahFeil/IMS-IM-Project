@@ -88,10 +88,10 @@ function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('show');
-        // Reset form if it's an add modal
-        if (modalId.includes('Modal') && !currentEditingId) {
-            const form = modal.querySelector('form');
-            if (form) form.reset();
+        
+        const form = modal.querySelector('form');
+        if (form && !currentEditingId) {
+            form.reset();
         }
     }
 }
@@ -692,62 +692,66 @@ function initializeSupplies() {
 
 // Render Supply List (READ-ONLY - No edit/delete actions)
 function renderSupplies() {
-  const tbody = document.querySelector('#supply-list #supplyTableBody');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-  data.supplies.forEach((supply, i) => {
-    tbody.insertAdjacentHTML('beforeend', `
-      <tr>
-        <td>${i+1}</td>
-        <td>${supply.name}</td>
-        <td>${supply.quantity}</td>
-        <td>${supply.unit}</td>
-      </tr>`);
-  });
-}
-
+    const tbody = document.getElementById('supplyTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data.supplies.forEach((s, i) => {
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td>${i+1}</td>
+          <td>${s.name}</td>
+          <td>${s.quantity}</td>
+          <td>${s.unit}</td>
+        </tr>`);
+    });
+  }
+  
 function saveSupply(e) {
     e.preventDefault();
-    
-    const name = document.getElementById('supplyName')?.value;
-    const quantity = parseInt(document.getElementById('supplyQuantity')?.value) || 0;
-    const unit = document.getElementById('supplyUnit')?.value;
-    
+  
+    // grab the form values
+    const nameEl     = document.getElementById('supplyName');
+    const qtyEl      = document.getElementById('supplyQuantity');
+    const unitEl     = document.getElementById('supplyUnit');
+    const name       = nameEl.value.trim();
+    const quantity   = parseInt(qtyEl.value, 10) || 0;
+    const unit       = unitEl.value.trim();
+  
     if (!name || !unit) {
-        alert('Please fill in all required fields');
-        return;
+      alert('Please fill in all required fields');
+      return;
     }
-    
-    const supplyData = {
-        id: currentEditingId || generateId(),
-        name,
-        quantity,
-        unit,
-        dateAdded: currentEditingId ? 
-            data.addedSupplies.find(s => s.id === currentEditingId)?.dateAdded || formatDate() 
-            : formatDate()
+  
+    // build the supply record
+    const supplyRecord = {
+      id: currentEditingId || generateId(),
+      name,
+      quantity,
+      unit
     };
-    
+  
     if (currentEditingId) {
-        // Update existing added supply
-        const index = data.addedSupplies.findIndex(supply => supply.id === currentEditingId);
-        if (index !== -1) {
-            data.addedSupplies[index] = supplyData;
-        }
+      // editing existing supply
+      const idx = data.supplies.findIndex(s => s.id === currentEditingId);
+      if (idx > -1) data.supplies[idx] = supplyRecord;
     } else {
-        // Add new supply to Added Supply
-        data.addedSupplies.push(supplyData);
+      // adding new supply
+      data.supplies.push(supplyRecord);
     }
-    
-    saveToLocalStorage('addedSuppliesData', data.addedSupplies);
-    renderAddedSupplies();
+  
+    // persist & re-render
+    saveToLocalStorage('suppliesData', data.supplies);
+    renderSupplies();
+  
+    // clean up
     closeModal('supplyModal');
-    
-    // Clear form and reset editing mode
-    document.getElementById('supplyForm').reset();
+    nameEl.value = '';
+    qtyEl.value  = '';
+    unitEl.value = '';
     currentEditingId = null;
     document.getElementById('supplyModalTitle').textContent = 'Add Supply';
-}
+  }
+  
 
 function renderAddedSupplies() {
     const tbody = document.querySelector('#added-supply #addedSupplyTableBody');
@@ -946,3 +950,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Default section is dashboard, make sure it's active
     switchSection('dashboard');
 });
+
+function confirmLogout(event) {
+    event.preventDefault();
+    openModal('logoutConfirmModal');
+  }
+  
+  function performLogout() {
+    closeModal('logoutConfirmModal');
+    window.location.href = "login.html"; // Adjust if you use a different page
+  }
+  
