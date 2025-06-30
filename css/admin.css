@@ -1257,7 +1257,3 @@ scrollbar-color: #774927 #f1f1f1;
   margin: 0;
 }
 
-/* hide Firefox spinners */
-.quantity-control input[type="number"] {
-  -moz-appearance: textfield;
-}
